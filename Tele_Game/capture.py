@@ -13,7 +13,8 @@ def Deemoji(text):
     clean_text = ' '.join([str for str in text.encode('utf-8').decode('utf-8').split() if not any(i in str for i in emoji_list)])
     return clean_text
 
-file1 = open("chats.txt" , "a")
+file1 = open("chats_qes.txt" , "a")
+file2 = open("chats_ans.txt" , "a")
 progress_String = "Converting JSON to Text file "
 with open('result.json') as json_file:
     data = json.load(json_file)
@@ -23,13 +24,12 @@ with open('result.json') as json_file:
         for j in range(len(mine['messages'])):
             what = dict(mine['messages'][j])
             if 'from' in what.keys():
-                #print(what['from'],":" , what["text"])
                 if type(what['text']) is str:
-                    killer = Deemoji(what['text'])
-                    texter = what['from'] + ":" + killer+"\n"
-                    file1.write(texter)
-            #else:
-                #print("I was on a Call")
+                    if what['text'] is not '':
+                        if what['from'] == "Vishwaak Chandran":
+                            file1.write(Deemoji(what['from']) + ":" +Deemoji(what['text'])+"\n")
+                        else:
+                            file2.write(Deemoji(what['from']) + ":" +Deemoji(what['text'])+"\n")
         os.system("clear")
         print(progress_String + str(math.ceil((i/x)*100)) + "%")
         time.sleep(0.01)
